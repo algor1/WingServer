@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using WingServer;
+using UnityEngine;
 
 namespace WingServer.Tests
 {
@@ -8,17 +9,20 @@ namespace WingServer.Tests
     public class ShipTests
     {
         [Test]
-        public void Move_Velocity1_directionX_CorrectDestination()
+        [TestCase (1,0,0 , 1,0,0)]
+        [TestCase (0,1,0 , 0,1,0)]
+        [TestCase (0,0,1 , 0,0,1)]
+        public void Move_Velocity1_directionX_CorrectDestination(float directionx, float directiony, float directionz, float expectedx , float expectedy, float expectedz)
         {
+            Vector3 direction = new Vector3(directionx, directiony, directionz);
             
-
-            Ship sut = new Ship(serverTick,new ShipData());
-            sut.Data.Velocity = 1;
-            serverTick?.Invoke(this,new EventArgs());
-           
+            Ship sut = new Ship(new ShipData());
+            sut.Data.Speed = 1f;
+            sut.Tick();
+            Vector3 actual = sut.Data.Position;
+            Assert.That(actual.x, Is.EqualTo(expectedx));
+            Assert.That(actual.y, Is.EqualTo(expectedy));
+            Assert.That(actual.z, Is.EqualTo(expectedz));
         }
-
-        private event EventHandler serverTick;
-
     }
 }
