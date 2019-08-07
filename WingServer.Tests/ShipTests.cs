@@ -28,5 +28,8 @@ namespace WingServer.Tests
             Assert.That(actual.y, Is.EqualTo(expectedy).Within(0.1),"Wrong value in Y");
             Assert.That(actual.z, Is.EqualTo(expectedz).Within(0.1), "Wrong value in Z");
         }
+        [Test]
+        public class Accelerate_SpeedAcceleration_CorrectSpeed()
+
     }
 }
