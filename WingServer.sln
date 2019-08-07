@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WingServer", "WingServer\Wi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WingServer.Tests", "WingServer.Tests\WingServer.Tests.csproj", "{833EE8D4-6DB7-4BEA-8DB7-67E5E7E930E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyQuaternion", "MyQuaternion\MyQuaternion.csproj", "{234C6CDF-C515-4FCC-AE5C-288C55FC5488}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{833EE8D4-6DB7-4BEA-8DB7-67E5E7E930E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{833EE8D4-6DB7-4BEA-8DB7-67E5E7E930E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{833EE8D4-6DB7-4BEA-8DB7-67E5E7E930E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{234C6CDF-C515-4FCC-AE5C-288C55FC5488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{234C6CDF-C515-4FCC-AE5C-288C55FC5488}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{234C6CDF-C515-4FCC-AE5C-288C55FC5488}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{234C6CDF-C515-4FCC-AE5C-288C55FC5488}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

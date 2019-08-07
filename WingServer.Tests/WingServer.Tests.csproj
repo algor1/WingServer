@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,6 +61,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MyQuaternion\MyQuaternion.csproj">
+      <Project>{234c6cdf-c515-4fcc-ae5c-288c55fc5488}</Project>
+      <Name>MyQuaternion</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WingServer\WingServer.csproj">
       <Project>{02c73f30-a481-4bed-a3ad-d9f01a908a14}</Project>
       <Name>WingServer</Name>

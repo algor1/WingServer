@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using MyQuaternions;
+using UnityEngine;
+
 
 namespace WingServer
    
@@ -6,12 +8,9 @@ namespace WingServer
     public class ShipData
     {
         public Vector3 Position { get; set; }
-        public Quaternion Rotation { get; set; }
+        public MyQuaternion Rotation { get; set; } = new MyQuaternion(0, 0, 0, 1);
         public float Speed { get; set; }
 
-        public void SetRotationEuler(Vector3 rotation)
-        {
-            Rotation = Quaternion.Euler(rotation);
-        }
+
     }
 }
