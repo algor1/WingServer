@@ -17,22 +17,43 @@ namespace WingServer.Tests
 
             MyQuaternion rotation = new MyQuaternion();
             Vector3 direction = new Vector3(directionx, directiony, directionz);
-            Ship sut = new Ship(new ShipData());
             rotation.SetLookRotation(direction);
-            sut.Data.Rotation = rotation;
 
-            sut.Data.Speed = 1f;
+            ShipData shipData = new ShipData();
+            shipData.Rotation = rotation;
+            shipData.Speed = 1f;
+
+            Ship sut = new Ship(shipData);
+                       
             sut.Tick();
             Vector3 actual = sut.Data.Position;
             Assert.That(actual.x, Is.EqualTo(expectedx).Within(0.1), "Wrong value in X");
             Assert.That(actual.y, Is.EqualTo(expectedy).Within(0.1), "Wrong value in Y");
             Assert.That(actual.z, Is.EqualTo(expectedz).Within(0.1), "Wrong value in Z");
         }
+
         [Test]
-        public void Accelerate_SpeedAcceleration_CorrectSpeed()
+        [TestCase (0,3,3)]
+        [TestCase(0, 20, 10)]
+        [TestCase(10, -4, 6)]
+        public void Accelerate_SpeedAcceleration_CorrectSpeed(float startSpeed, float aceleration,float expectedSpeed)
             {
-            Ship sut = new Ship(new ShipData());
+            ShipData shipData = new ShipData();
+            shipData.Aceleration = aceleration;
+            shipData.Speed = startSpeed;
+            shipData.SpeedMax = 10;
+            Ship sut = new Ship(shipData);
+            sut.Tick();
+
+            Assert.That(sut.Data.Speed, Is.EqualTo(expectedSpeed).Within(0.01));
+            
 
     }
+
+        [Test]
+        public void Rotation_RotationSpeed10NewDirection_CorrectRotation()
+        {
+
+        }
     }
 }
