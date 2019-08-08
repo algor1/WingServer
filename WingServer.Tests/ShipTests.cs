@@ -46,14 +46,23 @@ namespace WingServer.Tests
             sut.Tick();
 
             Assert.That(sut.Data.Speed, Is.EqualTo(expectedSpeed).Within(0.01));
-            
-
     }
 
         [Test]
-        public void Rotation_RotationSpeed10NewDirection_CorrectRotation()
+        [TestCase(0,0,1)]
+        public void Rotation_RotationSpeed90NewDirection_CorrectRotation(float rtx,float rty, float rtz)
         {
+            Vector3 rotationTarget = new Vector3(rtx, rty, rtz);
+            ShipData shipData = new ShipData();
+            shipData.RotationSpeed=10;
+            shipData.RotationTarget = rotationTarget;
 
+            Ship sut = new Ship(shipData);
+            sut.Tick();
+            Vector3 actual = sut.Data.Rotation.eulerAngles;
+            Assert.That(actual.x, Is.EqualTo(rtx).Within(0.1), "Wrong value in X");
+            Assert.That(actual.y, Is.EqualTo(rty).Within(0.1), "Wrong value in Y");
+            Assert.That(actual.z, Is.EqualTo(rtz).Within(0.1), "Wrong value in Z");
         }
     }
 }
