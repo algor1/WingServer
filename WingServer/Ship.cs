@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using MyQuaternions;
+using System;
 
 namespace WingServer
 {
     public class Ship
     {
         public ShipData Data { get; set; }
+        private RotateState _rotateState= RotateState.Stopped;
 
         public Ship (ShipData shipData)
         {
@@ -74,5 +76,17 @@ namespace WingServer
                 }
             }
         }
+
+        public void ChangeRotateState(RotateState rotateState)
+        {
+            switch (_rotateState)
+            {
+
+                //event state changed
+            }
+        }
+        private void ChangeRotateStateToRotating() { }
+
     }
+    public enum RotateState { Stopped,Starting,Rotating,Stopping};
 }
