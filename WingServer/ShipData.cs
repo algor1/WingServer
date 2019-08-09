@@ -14,5 +14,7 @@ namespace WingServer
         public float Aceleration { get; set; }
         public float RotationSpeed { get; set; }
         public Vector3 RotationTarget { get; set; }
+        public float RotationAcceleration { get; set; }
+        public float RotationSpeedMax { get; set; }
     }
 }
