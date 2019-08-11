@@ -63,16 +63,18 @@ namespace WingServer
             if (Data.RotationAcceleration != 0)
             {
                 Data.RotationSpeed += Data.RotationAcceleration;
-                if (Data.RotationSpeed > Data.RotationSpeedMax)
+                if (Data.RotationSpeed >= Data.RotationSpeedMax)
                 {
                     Data.RotationSpeed = Data.RotationSpeedMax;
                     Data.RotationAcceleration = 0;
+                    ChangeRotateState(RotateState.Rotating);
                 }
 
-                if (Data.RotationSpeed < 0)
+                if (Data.RotationSpeed <= 0)
                 {
                     Data.RotationSpeed = 0;
                     Data.RotationAcceleration = 0;
+                    ChangeRotateState(RotateState.Stopped);
                 }
             }
         }
@@ -87,6 +89,7 @@ namespace WingServer
                             ChangeRotateState(RotateState.Stopped);
                         }
                     StartRotating();
+                    OnRotationStateChangeCall(RotateState.Starting);
                     break;
 
                 case (RotateState.Rotating):
@@ -94,18 +97,22 @@ namespace WingServer
                     {
                         ChangeRotateState(RotateState.Starting);
                     }
+                    OnRotationStateChangeCall(RotateState.Rotating);
                     break;
                 case (RotateState.Stopping):
                     if (_rotateState != RotateState.Rotating)
                     {
                         ChangeRotateState(RotateState.Rotating);
                     }
+                    StopRotating();
+                    OnRotationStateChangeCall(RotateState.Stopping);
                     break;
                 case (RotateState.Stopped):
                     if (_rotateState != RotateState.Stopping)
                     {
                         ChangeRotateState(RotateState.Stopping);
                     }
+                    OnRotationStateChangeCall(RotateState.Stopped);
                     break;
             }
         }
@@ -114,6 +121,32 @@ namespace WingServer
             Data.RotationAcceleration = Data.RotationAccelerationMax;
         }
 
+        private void StopRotating()
+        {
+            Data.RotationAcceleration = -Data.RotationAccelerationMax;
+        }
+
+
+        #region events
+        public event EventHandler<RotateStateMashineArgs> RotationStateChanged;
+
+        protected virtual void OnRotationStateChange(RotateStateMashineArgs e)
+        {
+            EventHandler<RotateStateMashineArgs> handler = RotationStateChanged;
+        }
+        private void OnRotationStateChangeCall(RotateState rotateState)
+        {
+            RotateStateMashineArgs args = new RotateStateMashineArgs();
+            args.rotateState = rotateState;
+            OnRotationStateChange(args);
+        }
+        #endregion
+
     }
     public enum RotateState { Stopped,Starting,Rotating,Stopping};
+
+    public class RotateStateMashineArgs : EventArgs
+    {
+        public RotateState rotateState { get; set; }
+    }
 }

@@ -81,12 +81,18 @@ namespace WingServer.Tests
             sut.Tick();
             Assert.That(sut.Data.RotationSpeed, Is.EqualTo(expectedRotationSpeed).Within(0.01));
         }
-        public void ChangeRotateState_CorrectCommand_CorrectRotateState(RotateState nextState)
+
+        public void ChangeRotateState_toStarting_CorrectRotateState()
         {
             ShipData shipData = new ShipData();
-            
+            shipData.RotationAcceleration = 0;
+            shipData.RotationAccelerationMax = 10;
+
             Ship sut = new Ship(shipData);
             sut.ChangeRotateState(RotateState.Starting);
+            Assert.That(sut.
+
+            
         }
     }
 }
