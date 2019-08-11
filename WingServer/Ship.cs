@@ -79,13 +79,40 @@ namespace WingServer
 
         public void ChangeRotateState(RotateState rotateState)
         {
-            switch (_rotateState)
+            switch (rotateState)
             {
+                case (RotateState.Starting):
+                    if (_rotateState != RotateState.Stopped)
+                        {
+                            ChangeRotateState(RotateState.Stopped);
+                        }
+                    StartRotating();
+                    break;
 
-                //event state changed
+                case (RotateState.Rotating):
+                    if (_rotateState != RotateState.Starting)
+                    {
+                        ChangeRotateState(RotateState.Starting);
+                    }
+                    break;
+                case (RotateState.Stopping):
+                    if (_rotateState != RotateState.Rotating)
+                    {
+                        ChangeRotateState(RotateState.Rotating);
+                    }
+                    break;
+                case (RotateState.Stopped):
+                    if (_rotateState != RotateState.Stopping)
+                    {
+                        ChangeRotateState(RotateState.Stopping);
+                    }
+                    break;
             }
         }
-        private void ChangeRotateStateToRotating() { }
+        private void StartRotating()
+        {
+            Data.RotationAcceleration = Data.RotationAccelerationMax;
+        }
 
     }
     public enum RotateState { Stopped,Starting,Rotating,Stopping};
