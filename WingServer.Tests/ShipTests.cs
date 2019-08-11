@@ -90,7 +90,8 @@ namespace WingServer.Tests
 
             Ship sut = new Ship(shipData);
             sut.ChangeRotateState(RotateState.Starting);
-            Assert.That(sut.
+            //event+=
+            Assert.That(sut.Data.RotationAcceleration, Is.GreaterThan(0), "Rotate acceleration is equal or less 0");
 
             
         }
