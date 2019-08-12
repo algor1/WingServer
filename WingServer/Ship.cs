@@ -49,6 +49,8 @@ namespace WingServer
                 }
             }
         }
+        #region Rotation
+
         private void Rotate()
         {
             if (Data.RotationSpeed != 0)
@@ -134,7 +136,7 @@ namespace WingServer
         {
             Data.RotationAcceleration = -Data.RotationAccelerationMax;
         }
-
+        # endregion
 
         #region events
         public event EventHandler<RotateStateMashineArgs> RotationStateChanged;
