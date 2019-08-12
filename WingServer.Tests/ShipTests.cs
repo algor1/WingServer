@@ -81,19 +81,27 @@ namespace WingServer.Tests
             sut.Tick();
             Assert.That(sut.Data.RotationSpeed, Is.EqualTo(expectedRotationSpeed).Within(0.01));
         }
-
-        public void ChangeRotateState_toStarting_CorrectRotateState()
+        [Test]
+        [TestCase(RotateState.Stopped,RotateState.Starting, RotateState.Starting,0,10)]
+        [TestCase(RotateState.Stopped, RotateState.Rotating, RotateState.Starting,0,10)]
+        [TestCase(RotateState.Rotating, RotateState.Stopped, RotateState.Stopping,0,-10)]
+        [TestCase(RotateState.Starting, RotateState.Stopped, RotateState.Stopping,10,-10)]
+        [TestCase(RotateState.Stopped, RotateState.Stopping, RotateState.Stopped,0,0 )]
+        public void ChangeRotateState_NewState_CorrectRotateState(RotateState state, RotateState newState, RotateState expectedState,
+                                                                    float rotationAcceleration, float expectedRotationAcceleration)
         {
             ShipData shipData = new ShipData();
-            shipData.RotationAcceleration = 0;
+            shipData.RotationAcceleration = rotationAcceleration;
             shipData.RotationAccelerationMax = 10;
-
+            RotateState activeState;
             Ship sut = new Ship(shipData);
-            sut.ChangeRotateState(RotateState.Starting);
-            //event+=
-            Assert.That(sut.Data.RotationAcceleration, Is.GreaterThan(0), "Rotate acceleration is equal or less 0");
+            sut.CurrentRotateState = state;
+            sut.ChangeRotateState(newState);
+            sut.RotationStateChanged += (s, args) => activeState = args.rotateState;
 
-            
+            Assert.That(sut.Data.RotationAcceleration, Is.EqualTo(expectedRotationAcceleration).Within(0.001), $"Rotate acceleration is wrong actual {sut.Data.RotationAcceleration} exprected {expectedRotationAcceleration} ");
+            Assert.That(sut.CurrentRotateState, Is.EqualTo(expectedState),$"Wrong State after changin from {state} to {newState} expected {expectedState}");
+
         }
     }
 }

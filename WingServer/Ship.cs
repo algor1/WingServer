@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using MyQuaternions;
 using System;
+using System.Threading.Tasks;
 
 namespace WingServer
 {
     public class Ship
     {
         public ShipData Data { get; set; }
-        private RotateState _rotateState= RotateState.Stopped;
+        public RotateState CurrentRotateState { get; set; } = RotateState.Stopped;
 
         public Ship (ShipData shipData)
         {
@@ -67,52 +68,60 @@ namespace WingServer
                 {
                     Data.RotationSpeed = Data.RotationSpeedMax;
                     Data.RotationAcceleration = 0;
-                    ChangeRotateState(RotateState.Rotating);
+                    CurrentRotateState = RotateState.Rotating;
+                    OnRotationStateChangeCall(RotateState.Rotating);
                 }
 
                 if (Data.RotationSpeed <= 0)
                 {
                     Data.RotationSpeed = 0;
                     Data.RotationAcceleration = 0;
-                    ChangeRotateState(RotateState.Stopped);
+                    CurrentRotateState = RotateState.Stopped;
+                    OnRotationStateChangeCall(RotateState.Stopped);
                 }
             }
         }
 
         public void ChangeRotateState(RotateState rotateState)
         {
+            if (rotateState==CurrentRotateState)
+            {
+                return;
+            }
             switch (rotateState)
             {
                 case (RotateState.Starting):
-                    if (_rotateState != RotateState.Stopped)
+                    if (CurrentRotateState != RotateState.Stopped)
                         {
                             ChangeRotateState(RotateState.Stopped);
                         }
                     StartRotating();
+                    CurrentRotateState = RotateState.Starting;
                     OnRotationStateChangeCall(RotateState.Starting);
                     break;
 
                 case (RotateState.Rotating):
-                    if (_rotateState != RotateState.Starting)
+                    if (CurrentRotateState != RotateState.Starting)
                     {
                         ChangeRotateState(RotateState.Starting);
                     }
-                    OnRotationStateChangeCall(RotateState.Rotating);
+
                     break;
                 case (RotateState.Stopping):
-                    if (_rotateState != RotateState.Rotating)
+                    if (CurrentRotateState == RotateState.Stopped)
                     {
-                        ChangeRotateState(RotateState.Rotating);
+                        return;
                     }
                     StopRotating();
+                    CurrentRotateState = RotateState.Stopping;
                     OnRotationStateChangeCall(RotateState.Stopping);
                     break;
                 case (RotateState.Stopped):
-                    if (_rotateState != RotateState.Stopping)
+                    if (CurrentRotateState != RotateState.Stopping)
                     {
                         ChangeRotateState(RotateState.Stopping);
                     }
-                    OnRotationStateChangeCall(RotateState.Stopped);
+
                     break;
             }
         }
