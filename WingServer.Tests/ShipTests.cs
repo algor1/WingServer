@@ -106,7 +106,9 @@ namespace WingServer.Tests
         #region hitpoints
 
         [Test]
-        [TestCase()]
+        [TestCase(150,0,50)]
+        [TestCase(300, 0, 0)]
+        [TestCase(50, 50, 100)]
         public void DamegeShildArmor_CorrectHitpointsDamage_CorrectState(float damage, float expectedShieldHp, float expectedArmorHp)
         {
             ShipData shipData = new ShipData();
@@ -114,8 +116,22 @@ namespace WingServer.Tests
             shipData.ArmorHp = 100f;
             Ship sut = new Ship(shipData);
             sut.Damage(damage);
-            Assert.That(sut.Data.ArmorHp, Is.EqualTo(expectedArmorHp));
-            Assert.That(sut.Data.ShieldHp, Is.EqualTo(expectedShieldHp));
+            Assert.That(sut.Data.ArmorHp, Is.EqualTo(expectedArmorHp),$"wrong Armor hitpoints {sut.Data.ArmorHp} expected {expectedArmorHp}" );
+            Assert.That(sut.Data.ShieldHp, Is.EqualTo(expectedShieldHp), $"wrong Armor hitpoints {sut.Data.ShieldHp} expected {expectedShieldHp}");
+        }
+        [Test]
+        public void Damage_Criticaldamage_DestroyedEventRaised()
+        {
+            ShipData shipData = new ShipData();
+            shipData.ShipId = 10;
+            shipData.ShieldHp = 100f;
+            shipData.ArmorHp = 100f;
+
+            Ship sut = new Ship(shipData);
+            int shipId = 0;
+            sut.ShipDestroyed += (s, args) => shipId = args.ShipId;
+            sut.Damage(250);
+            Assert.That(shipId, Is.EqualTo(10));
         }
 
 

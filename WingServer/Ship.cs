@@ -136,7 +136,37 @@ namespace WingServer
         {
             Data.RotationAcceleration = -Data.RotationAccelerationMax;
         }
-        # endregion
+        #endregion
+
+        #region Hitpoints
+        public void Damage(float damage)
+        {
+            if (Data.ShieldHp - damage > 0)
+            {
+                Data.ShieldHp -= damage;
+            }
+            else
+            {
+                if (Data.ShieldHp + Data.ArmorHp - damage > 0)
+                {
+                    Data.ArmorHp -=  damage- Data.ShieldHp;
+                    Data.ShieldHp = 0;
+                }
+                else
+                {
+                    Data.ArmorHp = 0;
+                    Data.ShieldHp = 0;
+                    Destroy();
+                }
+            }
+        }
+
+        private void Destroy()
+        {
+            OnShipDestroyedCall(Data.ShipId);
+        }
+
+        #endregion
 
         #region events
         public event EventHandler<RotateStateMashineArgs> RotationStateChanged;
@@ -144,6 +174,7 @@ namespace WingServer
         protected virtual void OnRotationStateChange(RotateStateMashineArgs e)
         {
             EventHandler<RotateStateMashineArgs> handler = RotationStateChanged;
+            handler?.Invoke(this,e);
         }
         private void OnRotationStateChangeCall(RotateState rotateState)
         {
@@ -151,6 +182,23 @@ namespace WingServer
             args.rotateState = rotateState;
             OnRotationStateChange(args);
         }
+
+        
+        public event EventHandler<ShipIdArgs> ShipDestroyed;
+
+        protected virtual void OnShipDestroyed(ShipIdArgs e)
+        {
+            EventHandler<ShipIdArgs> handler = ShipDestroyed;
+                        handler?.Invoke(this,e);
+        }
+        private void OnShipDestroyedCall(int shipId)
+        {
+            ShipIdArgs args = new ShipIdArgs();
+            args.ShipId = shipId;
+            OnShipDestroyed(args);
+        }
+
+
         #endregion
 
     }
@@ -159,5 +207,9 @@ namespace WingServer
     public class RotateStateMashineArgs : EventArgs
     {
         public RotateState rotateState { get; set; }
+    }
+    public class ShipIdArgs : EventArgs
+    {
+        public int ShipId { get; set; }
     }
 }
