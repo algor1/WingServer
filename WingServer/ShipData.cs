@@ -20,5 +20,9 @@ namespace WingServer
         public float ShieldHp { get; set; }
         public float ArmorHp { get; set; }
         public int ShipId { get; set; }
+        public float ShieldHpMax { get; set; }
+        public float ArmorHpMax { get; set; }
+        public float RestoreShieldHp { get; set; }
+        public float RestoreArmorHp { get; set; }
     }
 }

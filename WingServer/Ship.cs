@@ -21,6 +21,8 @@ namespace WingServer
             Accelerate();
             Rotate();
             AccelerateRotation();
+            RestoreArmorHP();
+            RestoreShieldHP();
         }
         
 
@@ -160,7 +162,28 @@ namespace WingServer
                 }
             }
         }
-
+        private void RestoreArmorHP()
+        {
+            if (Data.ArmorHp < Data.ArmorHpMax)
+            {
+                Data.ArmorHp += Data.RestoreArmorHp;
+                if (Data.ArmorHp > Data.ArmorHpMax)
+                {
+                    Data.ArmorHp = Data.ArmorHpMax;
+                }
+            }
+        }
+        private void RestoreShieldHP()
+        {
+            if (Data.ShieldHp < Data.ShieldHpMax)
+            {
+                Data.ShieldHp += Data.RestoreShieldHp;
+                if (Data.ShieldHp > Data.ShieldHpMax)
+                {
+                    Data.ShieldHp = Data.ShieldHpMax;
+                }
+            }
+        }
         private void Destroy()
         {
             OnShipDestroyedCall(Data.ShipId);

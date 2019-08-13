@@ -134,6 +134,22 @@ namespace WingServer.Tests
             Assert.That(shipId, Is.EqualTo(10));
         }
 
+        [Test]
+        public void RestoreHP_CorrectShieldArmorHP_CorrectIncreaseHP()
+        {
+
+            ShipData shipData = new ShipData();
+            shipData.ShieldHp = 100f;
+            shipData.ArmorHp = 100f;
+            shipData.ShieldHpMax = 200f;
+            shipData.ArmorHpMax = 200f;
+            shipData.RestoreShieldHp = 1f;
+            shipData.RestoreArmorHp = 1f;
+            Ship sut = new Ship(shipData);
+            sut.Tick();
+            Assert.That(sut.Data.ArmorHp, Is.EqualTo(101).Within(0.001), $"Wrong armorHP increment expected 101 hp actual { sut.Data.ArmorHp}");
+            Assert.That(sut.Data.ShieldHp, Is.EqualTo(101).Within(0.001),$"Wrong shieldHP increment expected 101 hp actual { sut.Data.ShieldHp}");
+        }
 
         #endregion
     }
