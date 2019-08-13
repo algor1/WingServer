@@ -103,5 +103,22 @@ namespace WingServer.Tests
             Assert.That(sut.CurrentRotateState, Is.EqualTo(expectedState),$"Wrong State after changin from {state} to {newState} expected {expectedState}");
 
         }
+        #region hitpoints
+
+        [Test]
+        [TestCase()]
+        public void DamegeShildArmor_CorrectHitpointsDamage_CorrectState(float damage, float expectedShieldHp, float expectedArmorHp)
+        {
+            ShipData shipData = new ShipData();
+            shipData.ShieldHp = 100f;
+            shipData.ArmorHp = 100f;
+            Ship sut = new Ship(shipData);
+            sut.Damage(damage);
+            Assert.That(sut.Data.ArmorHp, Is.EqualTo(expectedArmorHp));
+            Assert.That(sut.Data.ShieldHp, Is.EqualTo(expectedShieldHp));
+        }
+
+
+        #endregion
     }
 }
