@@ -103,6 +103,20 @@ namespace WingServer.Tests
             Assert.That(sut.CurrentRotateState, Is.EqualTo(expectedState),$"Wrong State after changin from {state} to {newState} expected {expectedState}");
 
         }
+
+        [Test]
+        [TestCase(RotateState.Starting, 1,0,0 , RotateState.Stopping )]
+        public void RotateToTarget_RotationState_CorrectRotationState(RotateState state,float targetX, float targetY, float targetZ, RotateState newState)
+        {
+            ShipData shipData = new ShipData();
+            shipData.RotationAcceleration = 10;
+            shipData.RotationAccelerationMax = 10;
+            RotateState activeState;
+            Ship sut = new Ship(shipData);
+            sut.CurrentRotateState = state;
+            sut.ChangeRotateState(newState);
+        }
+
         #region hitpoints
 
         [Test]
