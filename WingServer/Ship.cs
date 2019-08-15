@@ -9,6 +9,8 @@ namespace WingServer
     {
         public ShipData Data { get; set; }
         public RotateState CurrentRotateState { get; set; } = RotateState.Stopped;
+        public Vector3 NewTargetToMove { get; set; }
+
 
         public Ship (ShipData shipData)
         {
@@ -23,6 +25,7 @@ namespace WingServer
             AccelerateRotation();
             RestoreArmorHP();
             RestoreShieldHP();
+            RotateToTarget();
         }
         
 
@@ -138,6 +141,18 @@ namespace WingServer
         {
             Data.RotationAcceleration = -Data.RotationAccelerationMax;
         }
+
+        private void RotateToTarget()
+        {
+            if (TargetToMove == NewTargetToMove)
+            {
+                return;
+            }
+
+        }
+
+
+
         #endregion
 
         #region Hitpoints

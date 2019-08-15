@@ -106,15 +106,22 @@ namespace WingServer.Tests
 
         [Test]
         [TestCase(RotateState.Starting, 1,0,0 , RotateState.Stopping )]
+        [TestCase(RotateState.Rotating, 1, 0, 0, RotateState.Stopping)]
         public void RotateToTarget_RotationState_CorrectRotationState(RotateState state,float targetX, float targetY, float targetZ, RotateState newState)
         {
+            Vector3 targetPosition = new Vector3(targetX, targetY, targetZ);
             ShipData shipData = new ShipData();
             shipData.RotationAcceleration = 10;
             shipData.RotationAccelerationMax = 10;
+            shipData.RotationTarget = new Vector3(1, 1, 1);
             RotateState activeState;
             Ship sut = new Ship(shipData);
+            sut.NewTargetToMove = targetPosition;
             sut.CurrentRotateState = state;
-            sut.ChangeRotateState(newState);
+            sut.Tick();
+            Assert.That(sut.CurrentRotateState, Is.EqualTo(newState));
+            
+
         }
 
         #region hitpoints
